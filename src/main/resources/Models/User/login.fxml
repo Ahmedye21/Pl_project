@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.User.LoginController">
+
+   <!-- Top Section: Login Title -->
+   <top>
+      <AnchorPane prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="240.0" layoutY="20.0" text="Login" textFill="#ffd400">
+               <font>
+                  <Font name="System Bold Italic" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+
+   <!-- Left Section: Labels -->
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="40.0" layoutY="60.0" text="Username" textFill="#ffd400">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="40.0" layoutY="120.0" text="Password" textFill="#ffd400">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </left>
+
+   <!-- Center Section: Input Fields -->
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="username" layoutY="60.0" prefHeight="30.0" prefWidth="300.0" promptText="Enter your username">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="password" layoutY="120.0" prefHeight="30.0" prefWidth="300.0" promptText="Enter your password">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </PasswordField>
+         </children>
+      </AnchorPane>
+   </center>
+
+   <!-- Right Section: Login Button -->
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="userlogin" layoutX="67.0" layoutY="115.0" mnemonicParsing="false" style="-fx-background-color: #ffd400;" text="Login" onAction="#handleLogin">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </right>
+
+   <!-- Bottom Section: Sign Up and Feedback -->
+   <bottom>
+      <AnchorPane prefHeight="171.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Feedback Label -->
+            <Label fx:id="wronglogin" layoutX="200.0" layoutY="20.0" style="-fx-font-size: 14px;" text=" " textFill="red" />
+
+            <!-- Signup Prompt -->
+            <Label layoutX="200.0" layoutY="80.0" text="Don't Have an Account?" textFill="#ffd400">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Label>
+
+            <!-- Signup Button -->
+            <Button fx:id="usersignup" layoutX="260.0" layoutY="120.0" mnemonicParsing="false" onAction="#SwitchToscene2" style="-fx-background-color: #ffd400;" text="Sign Up">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+
+    <!-- Top Section: Login Title -->
+    <top>
+        <AnchorPane prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </top>
+
+    <!-- Left Section: Labels -->
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </left>
+
+    <!-- Center Section: Input Fields -->
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
+
+    <!-- Right Section: Login Button -->
+    <right>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </right>
+
+    <!-- Bottom Section: Sign Up and Feedback -->
+    <bottom>
+        <AnchorPane prefHeight="171.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>
