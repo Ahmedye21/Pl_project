@@ -1,32 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.Customer.CustomerController">
 
-    <!-- Top Section: Login Title -->
+    <!-- Top Section: Title -->
     <top>
-        <AnchorPane prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+        <AnchorPane prefHeight="60.0" BorderPane.alignment="CENTER">
+            <Label layoutX="20.0" layoutY="15.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Customer" />
+        </AnchorPane>
     </top>
 
-    <!-- Left Section: Labels -->
-    <left>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-    </left>
-
-    <!-- Center Section: Input Fields -->
+    <!-- Center Section: TabPane for Old and New Customer Modules -->
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+        <TabPane prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- Old Customer Tab -->
+            <Tab text="Old Customer">
+                <AnchorPane>
+                    <VBox layoutX="20.0" layoutY="20.0" prefWidth="760.0" spacing="15">
+                        <!-- Pay Bill Section -->
+                        <HBox spacing="10">
+                            <Label text="Meter Code:" />
+                            <TextField fx:id="metercode" promptText="Enter meter code" />
+                            <Button fx:id="paybill" onAction="#handlePayBill" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Pay Bill" />
+                            <Button fx:id="read_meter_code" onAction="#handleSubmitReading" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Submit Reading" />
+                        </HBox>
+
+                        <!-- Enter Monthly Reading -->
+                        <HBox spacing="10" />
+
+                        <!-- Complaint Section -->
+                        <HBox spacing="10" />
+                        <HBox spacing="10">
+                            <Label text="Complaint:" />
+                            <TextArea fx:id="complaint" prefRowCount="3" promptText="Enter complaint details here..." />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Button fx:id="submit_complaint" onAction="#handleSubmitComplaint" style="-fx-background-color: #FF5722; -fx-text-fill: white;" text="Submit Complaint" />
+                        </HBox>
+
+                        <!-- Payment Notification -->
+                        <Label style="-fx-text-fill: #888888;" text="* Notifications will be sent for unpaid bills after 3 months." />
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+
+            <!-- New Customer Tab -->
+            <Tab text="New Customer">
+                <AnchorPane>
+                    <VBox layoutX="20.0" layoutY="20.0" prefWidth="760.0" spacing="15">
+                        <!-- Customer Information Section -->
+                        <HBox spacing="10">
+                            <Label text="Full Name:" />
+                            <TextField promptText="Enter your full name" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Address:" />
+                            <TextField promptText="Enter your address" />
+                        </HBox>
+
+                        <!-- Upload Contract Section -->
+                        <HBox spacing="10">
+                            <Label text="Upload Contract:" />
+                            <Button style="-fx-background-color: #607D8B; -fx-text-fill: white;" text="Choose File" />
+                        </HBox>
+
+                        <!-- Application Submission -->
+                        <HBox spacing="10">
+                            <Button style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Submit Application" />
+                        </HBox>
+
+                        <!-- Notification Section -->
+                        <Label style="-fx-text-fill: #888888;" text="* You will receive an email when the meter is ready." />
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+
+        </TabPane>
     </center>
 
-    <!-- Right Section: Login Button -->
-    <right>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-    </right>
-
-    <!-- Bottom Section: Sign Up and Feedback -->
+    <!-- Bottom Section: Footer -->
     <bottom>
-        <AnchorPane prefHeight="171.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+        <AnchorPane prefHeight="40.0" />
     </bottom>
 </BorderPane>

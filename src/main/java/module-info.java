@@ -6,6 +6,9 @@ module com.example.demo {
 
     opens Models to javafx.fxml;
     opens Models.User to javafx.fxml;
+    opens Models.Customer to javafx.fxml;
+
+
 
     exports Models;
     exports Models.User;
