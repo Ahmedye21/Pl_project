@@ -27,7 +27,7 @@ public class LoginController {
     @FXML
     private PasswordField password;
     @FXML
-    private Label wronglogin;  // changed to Label from TextField
+    private Label wronglogin;
     @FXML
     private Button userlogin;
 
@@ -38,7 +38,7 @@ public class LoginController {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
     public void SwitchToscene1(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("User/login.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Models/Customer/Customer.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -66,6 +66,7 @@ public class LoginController {
 
         if (validateCredentials(enteredUsername, enteredPassword)) {
             System.out.println("Login successful!");
+            SwitchToscene1(event);
         } else {
             wronglogin.setText("Invalid username or password.");
         }

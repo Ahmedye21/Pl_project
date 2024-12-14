@@ -59,10 +59,10 @@ public class SignupController {
 
     @FXML
     private void handleRegister() {
-        String enteredUsername = username.getText().trim();
-        String enteredEmail = email.getText().trim();
-        String enteredPassword = password.getText().trim();
-        String enteredRegion = region.getText().trim();
+        String enteredUsername  = username.getText().trim();
+        String enteredEmail     = email.getText().trim();
+        String enteredPassword  = password.getText().trim();
+        String enteredRegion    = region.getText().trim();
 
         if (enteredUsername.isEmpty() || enteredEmail.isEmpty() || enteredPassword.isEmpty() || enteredRegion.isEmpty()) {
             signupMessage.setText("Please fill in all fields.");
