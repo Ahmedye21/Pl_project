@@ -1,11 +1,8 @@
+ID: 86bb8058-da14-4b69-a200-031109f60787
 Name: ahmed
 Email: ahmed@gm.com
 Password: 12345
-Region: cairo
-----------------------
-Name: omar
-Email: omarom@hh.com
-Password: 1234
+Role: Admin
 Region: cairo
 ----------------------
 ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
