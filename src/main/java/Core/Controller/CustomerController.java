@@ -1,4 +1,4 @@
-package Models.Customer;
+package Core.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

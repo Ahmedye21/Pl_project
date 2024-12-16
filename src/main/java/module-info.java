@@ -1,15 +1,16 @@
-module com.example.demo {
+module com.example.Core {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.logging;
     requires java.desktop;
 
-    opens Models to javafx.fxml;
-    opens Models.User to javafx.fxml;
-    opens Models.Customer to javafx.fxml;
+    opens Core to javafx.fxml;
+    opens Core.Models to javafx.fxml;
+    opens Core.Controller to javafx.fxml;
 
 
 
-    exports Models;
-    exports Models.User;
+    exports Core;
+    exports Core.Models;
+    exports Core.Controller;
 }

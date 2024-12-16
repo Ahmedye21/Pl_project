@@ -10,3 +10,9 @@ Address: 12345
 Contract File: C:\Users\makro\Downloads\Doc1.pdf
 Date: 2024-12-16 13:46:02
 
+New Customer Application:
+Full Name: ahmed mmm 
+Address: asdasd
+Contract File: C:\Users\makro\Downloads\PL_PROJECT.pdf
+Date: 2024-12-16 20:14:19
+

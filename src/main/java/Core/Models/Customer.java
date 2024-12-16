@@ -1,4 +1,4 @@
-package Models.Customer;
+package Core.Models;
 
 public class Customer {
 }

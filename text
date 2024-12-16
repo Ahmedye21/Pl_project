@@ -1,0 +1,133 @@
+public class User {
+
+    private String id;
+    private String name;
+    private String email;
+    private String password;
+    private String role;
+
+
+    public User(String id, String name, String email, String password, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+
+    public void login() {
+        System.out.println(name + " has successfully logged in.");
+    }
+
+    public void logout() {
+        System.out.println(name + " has successfully logged out.");
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
+
+- - - - -------------------------------------
+public class Customer extends User {
+
+    private String meterCode;
+    private double monthlyReading;
+    private double[] billingHistory;
+    private boolean isMeterReady;
+
+
+    public Customer(String id, String name, String email, String password, String meterCode, double monthlyReading, boolean isMeterReady) {
+        super(id, name, email, password, "Customer");
+        this.meterCode = meterCode;
+        this.monthlyReading = monthlyReading;
+        this.billingHistory = new double[12];
+        this.isMeterReady = isMeterReady;
+    }
+
+
+    public void payBill(double amount) {
+        System.out.println("Bill of $" + amount + " has been paid by " + getName() + ".");
+        addToBillingHistory(amount);
+    }
+
+    public void submitReading(double reading) {
+        this.monthlyReading = reading;
+        System.out.println("Monthly meter reading of " + reading + " submitted by " + getName() + ".");
+    }
+
+    public void fileComplaint(String complaint) {
+        System.out.println(getName() + " has filed a complaint: " + complaint);
+    }
+
+
+    private void addToBillingHistory(double amount) {
+        for (int i = 0; i < billingHistory.length; i++) {
+            if (billingHistory[i] == 0) {
+                billingHistory[i] = amount;
+                break;
+            }
+        }
+    }
+
+
+    public String getMeterCode() {
+        return meterCode;
+    }
+
+    public void setMeterCode(String meterCode) {
+        this.meterCode = meterCode;
+    }
+
+    public double getMonthlyReading() {
+        return monthlyReading;
+    }
+
+    public void setMonthlyReading(double monthlyReading) {
+        this.monthlyReading = monthlyReading;
+    }
+
+    public boolean isMeterReady() {
+        return isMeterReady;
+    }
+
+    public void setMeterReady(boolean meterReady) {
+        isMeterReady = meterReady;
+    }
+
+    public double[] getBillingHistory() {
+        return billingHistory;
+}
+}
+
+

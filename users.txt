@@ -8,3 +8,10 @@ Email: omarom@hh.com
 Password: 1234
 Region: cairo
 ----------------------
+ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
+Name: vogo
+Email: vogo@onthebeat.com
+Password: 12345
+Role: User
+Region: Maadi
+----------------------
