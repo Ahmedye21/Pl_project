@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 
@@ -51,9 +53,33 @@ public class AdminControlPanel {
         billsList.setVisible(false);
         totalCollected.setVisible(false);
 
-        customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+            String line;
+            String id = null;
+            String name = null;
+            String email = null;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Name:")) {
+                    name = line.substring(5).trim();
+                } else if (line.startsWith("Email:")) {
+                    email = line.substring(6).trim();
+                } else if (line.startsWith("Role:") && line.contains("User")) {
+                    id = String.valueOf(billsList.getItems().size() + 1);
+                    if (name != null && email != null) {
+                        billsList.getItems().add(new Customer(id, name, email));
+                    }
+                    name = null;
+                    email = null;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onChange(ActionEvent event) {
@@ -63,18 +89,6 @@ public class AdminControlPanel {
     public void viewBills(ActionEvent event) {
         totalCollected.setVisible(false);
         billsList.setVisible(true);
-        billsList.getItems().add(new Customer(1,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(2,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(3,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(4,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(5,"Amos", "kero@gmail.com"));
-        billsList.getItems().add(new Customer(6,"Amos", "kero@gmail.com"));
-        System.out.println(region.getSelectionModel().getSelectedItem());
     }
 
     public void viewTotalCollected(ActionEvent event) {
