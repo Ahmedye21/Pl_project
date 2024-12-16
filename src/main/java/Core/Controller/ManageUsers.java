@@ -1,7 +1,6 @@
 package Core.Controller;
 
 import Core.Models.Customer;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.collections.FXCollections;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class ManageUsers {
@@ -32,11 +32,9 @@ public class ManageUsers {
     @FXML
     private TableColumn<Customer, String> userRole;
 
-    private ObservableList<Customer> userList = FXCollections.observableArrayList();
-
     @FXML
     public void initialize() {
-        customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
         userName.setCellValueFactory(new PropertyValueFactory<>("name"));
         userEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         userRole.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -46,7 +44,7 @@ public class ManageUsers {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Customer clickedUser = row.getItem();
-                    System.out.println("Double-clicked on: " + clickedUser.name + ", Role: " + clickedUser.getRole());
+                    System.out.println("Double-clicked on: " + clickedUser.getName() + ", Role: " + clickedUser.getRole());
                     showEditDialog(clickedUser);
                 }
             });
@@ -54,35 +52,37 @@ public class ManageUsers {
             return row;
         });
 
-        // Populate initial data
-        userList.addAll(
-                new Customer(1,"Amos", "kero@gmail.com"),
-                new Customer(2,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(3,"Amos", "kero@gmail.com"),
-                new Customer(4,"Amos", "kero@gmail.com"),
-                new Customer(5,"Amos", "kero@gmail.com")
-        );
-        userTable.setItems(userList);
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+            String line;
+            String id = null;
+            String name = null;
+            String email = null;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Name:")) {
+                    name = line.substring(5).trim();
+                } else if (line.startsWith("Email:")) {
+                    email = line.substring(6).trim();
+                } else if (line.startsWith("Role:")) {
+                    id = String.valueOf(userTable.getItems().size() + 1);
+                    if (name != null && email != null) {
+                        userTable.getItems().add(new Customer(id, name, email));
+                    }
+                    name = null;
+                    email = null;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleAddUser() {
         Customer newUser = showAddDialog();
         if (newUser != null) {
-            userList.add(newUser);
+            // TODO: Add newUser to users.txt
+            userTable.getItems().add(newUser);
         }
     }
 
@@ -99,7 +99,8 @@ public class ManageUsers {
 
         // Handle the delete button action
         deleteButton.setOnAction(e -> {
-            userList.remove(user);  // Remove the user from the list
+            // TODO: Remove user from users.txt
+            userTable.getItems().remove(user);
             dialog.close();  // Close the dialog
         });
 
@@ -113,8 +114,8 @@ public class ManageUsers {
 
         dialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
-                user.name = usernameField.getText();
-                user.role = roleField.getText();
+                user.setName(usernameField.getText());
+                user.setRole(roleField.getText());
             }
             return null;
         });
