@@ -10,13 +10,18 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.Customer.CustomerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Models.Customer.CustomerController">
 
     <!-- Top Section: Title -->
     <top>
         <AnchorPane prefHeight="60.0" BorderPane.alignment="CENTER">
-            <Label layoutX="20.0" layoutY="15.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Customer" />
+            <Label layoutX="20.0" layoutY="15.0" text="Customer" textFill="#ffd400">
+                <font>
+                    <Font name="System Bold Italic" size="36.0" />
+                </font>
+            </Label>
         </AnchorPane>
     </top>
 
@@ -30,23 +35,47 @@
                     <VBox layoutX="20.0" layoutY="20.0" prefWidth="760.0" spacing="15">
                         <!-- Pay Bill Section -->
                         <HBox spacing="10">
-                            <Label text="Meter Code:" />
-                            <TextField fx:id="metercode" promptText="Enter meter code" />
-                            <Button fx:id="paybill" onAction="#handlePayBill" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Pay Bill" />
-                            <Button fx:id="read_meter_code" onAction="#handleSubmitReading" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Submit Reading" />
+                            <Label text="Meter Code:" textFill="#ffd400">
+                                <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                </font>
+                            </Label>
+                            <TextField fx:id="metercode" promptText="Enter meter code">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
+                            <Button fx:id="paybill" onAction="#handlePayBill" style="-fx-background-color: #ffd400;" text="Pay Bill">
+                                <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                </font>
+                            </Button>
+                            <Button fx:id="read_meter_code" onAction="#handleSubmitReading" style="-fx-background-color: #ffd400;" text="Submit Reading">
+                                <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                </font>
+                            </Button>
                         </HBox>
-
-                        <!-- Enter Monthly Reading -->
-                        <HBox spacing="10" />
 
                         <!-- Complaint Section -->
-                        <HBox spacing="10" />
                         <HBox spacing="10">
-                            <Label text="Complaint:" />
-                            <TextArea fx:id="complaint" prefRowCount="3" promptText="Enter complaint details here..." />
+                            <Label text="Complaint:" textFill="#ffd400">
+                                <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                </font>
+                            </Label>
+                            <TextArea fx:id="complaint" prefRowCount="3" promptText="Enter complaint details here...">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextArea>
                         </HBox>
                         <HBox spacing="10">
-                            <Button fx:id="submit_complaint" onAction="#handleSubmitComplaint" style="-fx-background-color: #FF5722; -fx-text-fill: white;" text="Submit Complaint" />
+                            <Button fx:id="submit_complaint" onAction="#handleSubmitComplaint" style="-fx-background-color: #ffd400;" text="Submit Complaint">
+                                <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                </font>
+                            </Button>
                         </HBox>
 
                         <!-- Payment Notification -->
@@ -61,23 +90,51 @@
                     <VBox layoutX="20.0" layoutY="20.0" prefWidth="760.0" spacing="15">
                         <!-- Customer Information Section -->
                         <HBox spacing="10">
-                            <Label text="Full Name:" />
-                            <TextField promptText="Enter your full name" />
+                            <Label text="Full Name:" textFill="#ffd400">
+                                <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                </font>
+                            </Label>
+                            <TextField fx:id="fullname" promptText="Enter your full name">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
                         </HBox>
                         <HBox spacing="10">
-                            <Label text="Address:" />
-                            <TextField promptText="Enter your address" />
+                            <Label text="Address:" textFill="#ffd400">
+                                <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                </font>
+                            </Label>
+                            <TextField fx:id="address" promptText="Enter your address">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
                         </HBox>
 
                         <!-- Upload Contract Section -->
                         <HBox spacing="10">
-                            <Label text="Upload Contract:" />
-                            <Button style="-fx-background-color: #607D8B; -fx-text-fill: white;" text="Choose File" />
+                            <Label text="Upload Contract:" textFill="#ffd400">
+                                <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                </font>
+                            </Label>
+                            <Button fx:id="choose_file" onAction="#handleChooseFile" style="-fx-background-color: #ffd400;" text="Choose File">
+                                <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                </font>
+                            </Button>
                         </HBox>
 
                         <!-- Application Submission -->
                         <HBox spacing="10">
-                            <Button style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Submit Application" />
+                            <Button fx:id="submitapp" onAction="#handleSubmitApplication" style="-fx-background-color: #ffd400;" text="Submit Application">
+                                <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                </font>
+                            </Button>
                         </HBox>
 
                         <!-- Notification Section -->
