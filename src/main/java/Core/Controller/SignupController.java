@@ -70,13 +70,15 @@ public class SignupController {
             return;
         }
 
+        // Adding customerType as "New" by default
         User newUser = new User(
                 UUID.randomUUID().toString(),
                 enteredUsername,
                 enteredEmail,
                 enteredPassword,
-                "User",
-                enteredRegion
+                "User",  // Role is set to "User"
+                enteredRegion,
+                "New"  // Default customerType set to "New"
         );
 
         if (newUser.register()) {

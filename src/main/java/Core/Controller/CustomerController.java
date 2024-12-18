@@ -1,56 +1,105 @@
 package Core.Controller;
 
+import Core.Models.NewCustomer;
+import Core.Models.OldCustomer;
+import Core.Models.User;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class CustomerController {
 
     @FXML private TextField metercode;
     @FXML private TextArea complaint;
     @FXML private Button paybill;
-    @FXML private Button read_meter_code;
     @FXML private Button submit_complaint;
     @FXML private TextField fullname;
     @FXML private TextField address;
     @FXML private Button choose_file;
     @FXML private Button submitapp;
 
-    private File selectedFile; // Holds the file chosen by the user
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
+    private File selectedFile;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Handle "Pay Bill" button to save bill payment details.
-     */
+    @FXML
+    protected void handleSubmitApplication(ActionEvent event) {
+        String fullName = fullname.getText();
+        String addr = address.getText();
+
+        if (fullName.isEmpty() || addr.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Full Name and Address are required.");
+            return;
+        }
+
+        if (selectedFile == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please upload the contract file.");
+            return;
+        }
+
+        NewCustomer newCustomer = new NewCustomer("newId123", fullName, "newemail@example.com", "old");
+        newCustomer.handleSubmitApplication(fullName, addr, selectedFile);
+
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Application submitted successfully.");
+    }
+
+
+
     @FXML
     protected void handlePayBill(ActionEvent event) {
+        // Log the current logged-in user to the console for debugging
+        System.out.println("Current logged in user: " + (User.getLoggedInUser() != null ? User.getLoggedInUser().getName() : "None"));
+
+        // Get the meter code from the input field
         String meterCode = metercode.getText();
 
+        // Check if the meter code field is empty and show an alert if it is
         if (meterCode.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error", "Meter Code is required.");
             return;
         }
 
-        try (FileWriter writer = new FileWriter("bills.txt", true)) {
-            String record = "Paid Bill - Meter Code: " + meterCode + ", Date: " + dtf.format(LocalDateTime.now()) + "\n";
-            writer.write(record);
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Bill payment saved successfully.");
-            metercode.clear();
-        } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to save bill payment.");
+        // Get the logged-in user
+        User loggedInUser = User.getLoggedInUser();
+
+        // If no user is logged in, show an error alert
+        if (loggedInUser == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No user is logged in.");
+            return;
+        }
+
+        // Check if the logged-in user is an instance of OldCustomer
+        if (loggedInUser instanceof OldCustomer loggedInCustomer) {
+            // Process the bill payment for the old customer
+            loggedInCustomer.handleBillPayment(meterCode);
+
+            // Show a success alert after the bill payment is processed
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Bill payment submitted successfully.");
+        } else {
+            // If the logged-in user is not an OldCustomer, show an error alert
+            showAlert(Alert.AlertType.ERROR, "Error", "The logged-in user is not an OldCustomer.");
         }
     }
 
-    /**
-     * Handle "Submit Reading" button to save meter reading details.
-     */
+
+
     @FXML
     protected void handleSubmitReading(ActionEvent event) {
         String meterCode = metercode.getText();
@@ -70,9 +119,6 @@ public class CustomerController {
         }
     }
 
-    /**
-     * Handle "Submit Complaint" button to save a customer's complaint.
-     */
     @FXML
     protected void handleSubmitComplaint(ActionEvent event) {
         String meterCode = metercode.getText();
@@ -83,12 +129,17 @@ public class CustomerController {
             return;
         }
 
-        String fileName = "Complaint_" + meterCode + "_" + System.currentTimeMillis() + ".txt";
+        String fileName = "Complaint_" + meterCode + ".txt";
 
-        try (FileWriter writer = new FileWriter(fileName)) {
-            writer.write("Meter Code: " + meterCode + "\n");
-            writer.write("Date: " + dtf.format(LocalDateTime.now()) + "\n");
-            writer.write("Complaint: " + complaintText + "\n");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write("Meter Code: " + meterCode);
+            writer.newLine();
+            writer.write("Date: " + dtf.format(LocalDateTime.now()));
+            writer.newLine();
+            writer.write("Complaint: " + complaintText);
+            writer.newLine();
+            writer.write("----------------------");
+            writer.newLine();
             showAlert(Alert.AlertType.INFORMATION, "Success", "Complaint saved successfully.");
             metercode.clear();
             complaint.clear();
@@ -97,70 +148,40 @@ public class CustomerController {
         }
     }
 
-    /**
-     * Handle "Choose File" button to allow users to pick a contract file.
-     */
+
+
     @FXML
     protected void handleChooseFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Contract File");
-
-        // Optional: set file extension filters
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-
-        selectedFile = fileChooser.showOpenDialog(choose_file.getScene().getWindow());
-
+        selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            showAlert(Alert.AlertType.INFORMATION, "File Selected", "Selected File: " + selectedFile.getName());
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         } else {
-            showAlert(Alert.AlertType.WARNING, "No File Selected", "Please select a valid file.");
+            System.out.println("No file selected.");
         }
     }
 
-    /**
-     * Handle "Submit Application" button to save new customer details into a file.
-     */
     @FXML
-    protected void handleSubmitApplication(ActionEvent event) {
-        String fullName = fullname.getText();
-        String addr = address.getText();
-
-        if (fullName.isEmpty() || addr.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Full Name and Address are required.");
-            return;
+    public void logout(ActionEvent event) {
+        // Call logout method from User class
+        User loggedInUser = User.getLoggedInUser();
+        if (loggedInUser != null) {
+            loggedInUser.logout();
         }
 
-        if (selectedFile == null) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please upload the contract file.");
-            return;
-        }
-
-        try (FileWriter writer = new FileWriter("new_customers.txt", true)) {
-            String record = "New Customer Application:\n"
-                    + "Full Name: " + fullName + "\n"
-                    + "Address: " + addr + "\n"
-                    + "Contract File: " + selectedFile.getAbsolutePath() + "\n"
-                    + "Date: " + dtf.format(LocalDateTime.now()) + "\n\n";
-
-            writer.write(record);
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Application submitted successfully.");
-
-            // Clear fields after submission
-            fullname.clear();
-            address.clear();
-            selectedFile = null;
+        // Redirect to the login page
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Models/User/login.fxml")));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to save customer application.");
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Display alert messages.
-     */
+
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

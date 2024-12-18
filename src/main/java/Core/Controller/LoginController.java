@@ -1,5 +1,6 @@
 package Core.Controller;
 
+import Core.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,55 +57,70 @@ public class LoginController {
             return;
         }
 
-        String userRole = validateCredentials(enteredUsername, enteredPassword);
+        // Validate credentials
+        User loggedInUser = validateCredentials(enteredUsername, enteredPassword);
 
-        if (userRole != null) {
-            System.out.println("Login successful! Role: " + userRole);
+        if (loggedInUser != null) {
+            User.setLoggedInUser(loggedInUser); // Set the static logged-in user
 
-            if (userRole.equals("Admin")) {
-                loadScene(event, "/Models/Admin/admin_control_panel.fxml");
-            } else if (userRole.equals("Customer") || userRole.equals("User")) {
-                loadScene(event, "/Models/Customer/Customer.fxml");
-            } else {
-                wronglogin.setText("Unrecognized role.");
+            System.out.println("Login successful! Welcome " + loggedInUser.getName());
+
+            // Redirect based on user role
+            switch (loggedInUser.getRole()) {
+                case "Admin":
+                    loadScene(event, "/Models/Admin/admin_control_panel.fxml");
+                    break;
+                case "Customer":
+                case "User":
+                    loadScene(event, "/Models/Customer/Customer.fxml");
+                    break;
+                default:
+                    wronglogin.setText("Unrecognized role.");
+                    break;
             }
         } else {
             wronglogin.setText("Invalid username or password.");
         }
     }
 
-    private String validateCredentials(String username, String password) {
+    private User validateCredentials(String username, String password) {
         File file = new File("users.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            String storedUsername = null;
-            String storedPassword = null;
-            String storedRole = null;
+            String id = null, name = null, email = null, filePassword = null, role = null, region = null, customerType = "New"; // Default customerType
 
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Name:")) {
-                    storedUsername = line.substring(5).trim();
-                }
-                if (line.startsWith("Password:")) {
-                    storedPassword = line.substring(9).trim();
-                }
-                if (line.startsWith("Role:")) {
-                    storedRole = line.substring(5).trim();
+                if (line.startsWith("ID:")) {
+                    id = line.substring(3).trim();
+                } else if (line.startsWith("Name:")) {
+                    name = line.substring(5).trim();
+                } else if (line.startsWith("Email:")) {
+                    email = line.substring(6).trim();
+                } else if (line.startsWith("Password:")) {
+                    filePassword = line.substring(9).trim();
+                } else if (line.startsWith("Role:")) {
+                    role = line.substring(5).trim();
+                } else if (line.startsWith("Region:")) {
+                    region = line.substring(7).trim();
+                } else if (line.startsWith("CustomerType:")) {
+                    customerType = line.substring(13).trim(); // Get customerType from file
                 }
 
-                if (storedUsername != null && storedPassword != null && storedRole != null) {
-                    if (storedUsername.equals(username) && storedPassword.equals(password)) {
-                        return storedRole;
+                // Check if we have all the necessary details
+                if (id != null && name != null && email != null && filePassword != null && role != null && region != null) {
+                    // Verify the username and password match
+                    if (name.equals(username) && filePassword.equals(password)) {
+                        return new User(id, name, email, filePassword, role, region, customerType); // Pass customerType correctly
                     }
-                    storedUsername = null;
-                    storedPassword = null;
-                    storedRole = null;
+
+                    // Reset fields for the next user in the file
+                    id = name = email = filePassword = role = region = customerType = null;
                 }
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to login", e);
+            LOGGER.log(Level.SEVERE, "Error reading user file", e);
         }
-        return null;
+        return null; // Return null if no match found
     }
 
     private void loadScene(ActionEvent event, String fxmlPath) throws IOException {

@@ -22,6 +22,11 @@
                     <Font name="System Bold Italic" size="36.0" />
                 </font>
             </Label>
+         <Button fx:id="paybill1" layoutX="707.0" layoutY="10.0" onAction="#logout" style="-fx-background-color: #f7f7f7;" text="Logout" textFill="RED">
+            <font>
+               <Font name="System Bold Italic" size="16.0" />
+            </font>
+         </Button>
         </AnchorPane>
     </top>
 

@@ -1,0 +1,6 @@
+Old Customer - ID: oldId456, Name: John Doe, Email: johndoe@example.com, Date: 2024-12-18 17:35:13
+Old Customer - ID: oldId456
+Name: John Doe
+Email: johndoe@example.com
+Date: 2024-12-18 18:55:00
+----------------------

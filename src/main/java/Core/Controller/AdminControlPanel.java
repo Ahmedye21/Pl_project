@@ -1,5 +1,6 @@
 package Core.Controller;
 
+import Core.Models.Admin; // Import the Admin class
 import Core.Models.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,18 +8,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Date;
+
+
+import java.io.IOException;
+import java.util.Set;
 
 public class AdminControlPanel {
     @FXML
@@ -45,10 +45,20 @@ public class AdminControlPanel {
     @FXML
     public Label totalCollected;
 
+    private Admin admin;
+
+    public AdminControlPanel() {
+        admin = new Admin();
+    }
+
     @FXML
     public void initialize() {
-        region.getItems().addAll("Cairo", "Giza", "Helwan");
-        region.getSelectionModel().select("Cairo");
+        Set<String> regions = admin.loadRegions();
+        region.getItems().addAll(regions);
+
+        if (!regions.isEmpty()) {
+            region.getSelectionModel().select(0);
+        }
 
         billsList.setVisible(false);
         totalCollected.setVisible(false);
@@ -57,28 +67,9 @@ public class AdminControlPanel {
         customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            String id = null;
-            String name = null;
-            String email = null;
-
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Name:")) {
-                    name = line.substring(5).trim();
-                } else if (line.startsWith("Email:")) {
-                    email = line.substring(6).trim();
-                } else if (line.startsWith("Role:") && line.contains("User")) {
-                    id = String.valueOf(billsList.getItems().size() + 1);
-                    if (name != null && email != null) {
-                        billsList.getItems().add(new Customer(id, name, email));
-                    }
-                    name = null;
-                    email = null;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Set<Customer> customers = admin.loadUsers();
+        for (Customer customer : customers) {
+            billsList.getItems().add(customer);
         }
     }
 
@@ -99,12 +90,14 @@ public class AdminControlPanel {
     }
 
     public void viewStatistics(ActionEvent event) {
-//        billsList.getItems().add("meen el 5wl ely " + region.getSelectionModel().getSelectedItem());
+        admin.viewReports();
         System.out.println(region.getSelectionModel().getSelectedItem());
     }
 
     public void manageUsers(ActionEvent event) throws IOException {
-        Parent root =  new FXMLLoader(getClass().getResource("/Models/Admin/manage_users.fxml")).load();
+        admin.manageUsers();
+
+        Parent root = new FXMLLoader(getClass().getResource("/Models/Admin/manage_users.fxml")).load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setTitle("Manage Users");

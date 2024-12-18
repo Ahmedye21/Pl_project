@@ -12,9 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class ManageUsers {
     @FXML
@@ -52,24 +50,29 @@ public class ManageUsers {
             return row;
         });
 
+        // Read users from the file and populate the table
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
-            String id = null;
-            String name = null;
-            String email = null;
+            String id = null, name = null, email = null, password = null, role = null, region = null;
 
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Name:")) {
+                if (line.startsWith("ID:")) {
+                    id = line.substring(4).trim();
+                } else if (line.startsWith("Name:")) {
                     name = line.substring(5).trim();
                 } else if (line.startsWith("Email:")) {
                     email = line.substring(6).trim();
+                } else if (line.startsWith("Password:")) {
+                    password = line.substring(9).trim();
                 } else if (line.startsWith("Role:")) {
-                    id = String.valueOf(userTable.getItems().size() + 1);
-                    if (name != null && email != null) {
-                        userTable.getItems().add(new Customer(id, name, email));
+                    role = line.substring(5).trim();
+                } else if (line.startsWith("Region:")) {
+                    region = line.substring(7).trim();
+                } else if (line.startsWith("----------------------")) {
+                    if (id != null && name != null && email != null && role != null && password != null && region != null) {
+                        userTable.getItems().add(new Customer(id, name, email, password, role, region));
                     }
-                    name = null;
-                    email = null;
+                    id = name = email = password = role = region = null;
                 }
             }
         } catch (IOException e) {
@@ -83,6 +86,7 @@ public class ManageUsers {
         if (newUser != null) {
             // TODO: Add newUser to users.txt
             userTable.getItems().add(newUser);
+            updateUsersFile(); // Update the file after adding a new user
         }
     }
 
@@ -99,8 +103,9 @@ public class ManageUsers {
 
         // Handle the delete button action
         deleteButton.setOnAction(e -> {
-            // TODO: Remove user from users.txt
+            // Delete user from the TableView and users.txt
             userTable.getItems().remove(user);
+            updateUsersFile();  // Update the file after deletion
             dialog.close();  // Close the dialog
         });
 
@@ -116,13 +121,13 @@ public class ManageUsers {
             if (buttonType == ButtonType.OK) {
                 user.setName(usernameField.getText());
                 user.setRole(roleField.getText());
+                updateUsersFile();  // Update the file after editing
             }
             return null;
         });
 
         dialog.showAndWait();
     }
-
 
     private Customer showAddDialog() {
         Dialog<Customer> dialog = new Dialog<>();
@@ -140,16 +145,40 @@ public class ManageUsers {
 
         dialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
+                // Assuming password and region are optional, you can provide default values or get them from user inputs
+                String password = "default_password";  // Replace with actual user input if needed
+                String region = "default_region";      // Replace with actual user input if needed
+
                 return new Customer(
-                        1,
-                        usernameField.getText(),
-                        roleField.getText()
+                        String.valueOf(userTable.getItems().size() + 1),  // Generate a unique String ID
+                        usernameField.getText(),  // Get the name from user input
+                        "",  // Assuming you don't have an email input for now
+                        password,  // Default password or input value
+                        roleField.getText(),  // Get the role from user input
+                        region  // Default region or input value
                 );
             }
             return null;
         });
 
         return dialog.showAndWait().orElse(null);
+    }
+
+    // Method to update the users.txt file after any change
+    private void updateUsersFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
+            for (Customer user : userTable.getItems()) {
+                writer.write("ID: " + user.getId() + "\n");
+                writer.write("Name: " + user.getName() + "\n");
+                writer.write("Email: " + user.getEmail() + "\n");
+                writer.write("Password: " + user.getPassword() + "\n");
+                writer.write("Role: " + user.getRole() + "\n");
+                writer.write("Region: " + user.getRegion() + "\n");
+                writer.write("----------------------\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void back(ActionEvent event) throws IOException {

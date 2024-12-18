@@ -16,3 +16,9 @@ Address: asdasd
 Contract File: C:\Users\makro\Downloads\PL_PROJECT.pdf
 Date: 2024-12-16 20:14:19
 
+New Customer - ID: newId123, Name: ahmed mohmaed, Email: newemail@example.com, Date: 2024-12-18 17:35:32
+New Customer - ID: newId123
+Name: 123
+Email: newemail@example.com
+Date: 2024-12-18 20:40:32
+----------------------

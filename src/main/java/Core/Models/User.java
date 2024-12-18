@@ -11,28 +11,37 @@ public class User {
     private String password;
     private String role;
     private String region;
+    private String customerType; // Added customerType field for users
+    private static User loggedInUser;  // This stores the logged-in user
 
     private static final Logger LOGGER = Logger.getLogger(User.class.getName());
     private static final String USER_FILE = "users.txt";
 
     // Constructor
-    public User(String id, String name, String email, String password, String role, String region) {
+    public User(String id, String name, String email, String password, String role, String region , String customerType) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
         this.region = region;
+        this.customerType = (customerType != null) ? customerType : "New";
     }
 
     // Constructor for simplified initialization
     public User() {}
+
+    public User(String id, String name, String email, String password, String role, String region) {
+    }
 
     // Register user and save details to a text file
     public boolean register() {
         if (name == null || email == null || password == null || region == null) {
             LOGGER.log(Level.WARNING, "Missing required fields for registration");
             return false;
+        }
+        if (customerType == null) {
+            customerType = "New";
         }
 
         File file = new File(USER_FILE);
@@ -49,6 +58,8 @@ public class User {
             writer.newLine();
             writer.write("Region: " + region);
             writer.newLine();
+            writer.write("CustomerType: " + customerType);
+            writer.newLine();
             writer.write("----------------------");
             writer.newLine();
             return true;
@@ -58,7 +69,6 @@ public class User {
         }
     }
 
-    // Search for a user in the text file by username and password
     public User searchUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
             String line;
@@ -77,36 +87,49 @@ public class User {
                     role = line.substring(5).trim();
                 } else if (line.startsWith("Region:")) {
                     region = line.substring(7).trim();
+                } else if (line.startsWith("CustomerType:")) {
+                    customerType = line.substring(13).trim();
                 }
 
                 // Check if the current user matches the search criteria
                 if (name != null && filePassword != null) {
                     if (name.equals(username) && filePassword.equals(password)) {
-                        return new User(id, name, email, filePassword, role, region);
+                        return new User(id, name, email, filePassword, role, region, customerType); // Return with customerType
                     }
                     // Reset fields for the next user
-                    id = name = email = filePassword = role = region = null;
+                    id = name = email = filePassword = role = region = customerType = null;
                 }
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error searching user in file", e);
         }
-        return null; // Return null if user is not found
+        return null;
     }
 
-    // Authenticate the user with the provided password
+    public static User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public static void setLoggedInUser(User user) {
+        loggedInUser = user;
+        System.out.println("Logged in user: " + loggedInUser.getName());
+    }
+
+    public void login() {
+        User.setLoggedInUser(this);
+        User loggedInUser = User.getLoggedInUser();
+        System.out.println("Current logged in user: " + (loggedInUser != null ? loggedInUser.getName() : "None"));
+        System.out.println(this.getName() + " has successfully logged in.");
+    }
+
     public boolean authenticate(String enteredPassword) {
         return this.password != null && this.password.equals(enteredPassword);
-    }
-
-    // Login action
-    public void login() {
-        System.out.println(name + " has successfully logged in.");
     }
 
     // Logout action
     public void logout() {
         System.out.println(name + " has successfully logged out.");
+        loggedInUser = null; // Set logged-in user to null upon logout
     }
 
     // Getters and setters
@@ -156,5 +179,13 @@ public class User {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 }
