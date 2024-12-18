@@ -1,7 +1,7 @@
 ID: 86bb8058-da14-4b69-a200-031109f60787
-Name: ahmed
-Email: ahmed@gm.com
-Password: 12345
+Name: admin
+Email: admin@gm.com
+Password: admin
 Role: Admin
 Region: cairo
 ----------------------
@@ -16,6 +16,13 @@ ID: 9316fceb-5dbd-4ab3-a101-a0d0df40eb8a
 Name: mo
 Email: momo@gg.co
 Password: momo
-Role: User
+Role: new
 Region: fafa
+----------------------
+ID: 4
+Name: عماشف
+Email: 
+Password: default_password
+Role: Admin
+Region: default_region
 ----------------------

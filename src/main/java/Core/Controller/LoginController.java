@@ -38,6 +38,7 @@ public class LoginController {
 
     private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
+
     public void SwitchToscene2(ActionEvent event) throws IOException {
         URL resource = getClass().getResource("/Models/User/signup.fxml");
         System.out.println(resource);
@@ -47,6 +48,7 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+
 
     public void handleLogin(ActionEvent event) throws IOException {
         String enteredUsername = username.getText().trim();
@@ -72,6 +74,10 @@ public class LoginController {
                     break;
                 case "Customer":
                 case "User":
+                case "old":
+                case "new":
+
+
                     loadScene(event, "/Models/Customer/Customer.fxml");
                     break;
                 default:

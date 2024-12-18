@@ -14,57 +14,69 @@ public class Admin extends User {
 
     public Admin() {}
 
-    public Set<Customer> loadUsers() {
-        Set<Customer> customers = new HashSet<>();
-        String id = null;
+    public Set<Customer> loadBills() {
+        Set<Customer> bills = new HashSet<>();
         String name = null;
+        double amount = 0.0;
+        String billNumber = null;
+        String meterCode = null;
+        String region = null;
         String email = null;
-        String role = null;
-        String password = null;  // Add password field
-        String region = null;    // Add region field
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("bills.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Name:")) {
                     name = line.substring(5).trim();
-                } else if (line.startsWith("Email:")) {
-                    email = line.substring(6).trim();
-                } else if (line.startsWith("Role:")) {
-                    role = line.substring(5).trim(); // Capture the role (i.e., customerType)
-                } else if (line.startsWith("Password:")) {
-                    password = line.substring(9).trim();  // Capture the password
+                } else if (line.startsWith("Amount: $")) {
+                    try {
+                        amount = Double.parseDouble(line.substring(9).trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error parsing amount: " + line);
+                    }
+                } else if (line.startsWith("Bill Number:")) {
+                    billNumber = line.substring(12).trim();
+                } else if (line.startsWith("Meter Code:")) {
+                    meterCode = line.substring(11).trim();
                 } else if (line.startsWith("Region:")) {
-                    region = line.substring(7).trim();  // Capture the region
+                    region = line.substring(7).trim();
+                } else if (line.startsWith("Customer Email:")) {
+                    email = line.substring(15).trim();
                 }
 
-                // When all information is gathered, add the customer
-                if (name != null && email != null && role != null && password != null && region != null) {
-                    // Generate ID based on the current size of the set
-                    id = String.valueOf(customers.size() + 1);  // Can be improved if you want more reliable ID generation
+                if (line.trim().equals("----------------------")) {
+                    if (name != null && billNumber != null && amount > 0) {
+                        Customer customer = new Customer(name, billNumber, amount, meterCode, region, email);
+                        bills.add(customer);
 
-                    // Add the customer to the set
-                    customers.add(new Customer(id, name, email, password, role, region));
+                        System.out.println("Name: " + name);
+                        System.out.println("Amount: " + amount);
+                        System.out.println("Bill Number: " + billNumber);
+                        System.out.println("Meter Code: " + meterCode);
+                        System.out.println("Region: " + region);
+                        System.out.println("Customer Email: " + email);
+                        System.out.println("----------------------");
+                    }
 
-                    // Reset variables for the next user
                     name = null;
-                    email = null;
-                    role = null;
-                    password = null;
+                    amount = 0.0;
+                    billNumber = null;
+                    meterCode = null;
                     region = null;
+                    email = null;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return customers;
+        return bills;
     }
-    // Method to load regions from the "users.txt" file
+
     public Set<String> loadRegions() {
         Set<String> regions = new HashSet<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("bills.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Region:")) {
@@ -79,16 +91,38 @@ public class Admin extends User {
         return regions;
     }
 
-    // Admin-specific methods for reports and user management
+
+
+
+    public double getTotalCollected() {
+        double totalAmount = 0.0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("bills.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Amount: $")) {
+                    String amountStr = line.substring(9).trim();
+                    try {
+                        double amount = Double.parseDouble(amountStr);
+                        totalAmount += amount;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: Invalid amount format in bills.txt");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return totalAmount;
+    }
+
+
     public void viewReports() {
         System.out.println("Admin is viewing reports...");
-        // Implement logic for viewing reports
     }
 
     public void manageUsers() {
         System.out.println("Admin is managing users...");
-        // Implement logic for managing users
     }
-
-    // Additional admin-specific behavior can be added here
 }

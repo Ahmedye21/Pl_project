@@ -53,11 +53,11 @@ public class SignupController {
 
     @FXML
     private void handleRegister() {
-        String enteredUsername = username.getText().trim();
-        String enteredEmail = email.getText().trim();
-        String enteredPassword = password.getText().trim();
-        String enteredConfirmPassword = confirmPassword.getText().trim();
-        String enteredRegion = region.getText().trim();
+        String enteredUsername          = username.getText().trim();
+        String enteredEmail             = email.getText().trim();
+        String enteredPassword          = password.getText().trim();
+        String enteredConfirmPassword   = confirmPassword.getText().trim();
+        String enteredRegion            = region.getText().trim();
 
         // Validate fields
         if (enteredUsername.isEmpty() || enteredEmail.isEmpty() || enteredPassword.isEmpty() || enteredRegion.isEmpty()) {

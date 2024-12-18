@@ -50,12 +50,17 @@
                                     <Font size="14.0" />
                                 </font>
                             </TextField>
+                     <TextField fx:id="price" layoutX="132.0" layoutY="10.0" promptText="Enter Amount $$">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </TextField>
                             <Button fx:id="paybill" onAction="#handlePayBill" style="-fx-background-color: #ffd400;" text="Pay Bill">
                                 <font>
                                     <Font name="System Bold Italic" size="16.0" />
                                 </font>
                             </Button>
-                            <Button fx:id="read_meter_code" onAction="#handleSubmitReading" style="-fx-background-color: #ffd400;" text="Submit Reading">
+                            <Button fx:id="read_meter_code" onAction="#handleSubmitReading" prefHeight="35.0" prefWidth="151.0" style="-fx-background-color: #ffd400;" text="Submit Reading">
                                 <font>
                                     <Font name="System Bold Italic" size="16.0" />
                                 </font>
@@ -75,17 +80,16 @@
                                 </font>
                             </TextArea>
                         </HBox>
-                        <HBox spacing="10">
-                            <Button fx:id="submit_complaint" onAction="#handleSubmitComplaint" style="-fx-background-color: #ffd400;" text="Submit Complaint">
-                                <font>
-                                    <Font name="System Bold Italic" size="16.0" />
-                                </font>
-                            </Button>
-                        </HBox>
-
-                        <!-- Payment Notification -->
-                        <Label style="-fx-text-fill: #888888;" text="* Notifications will be sent for unpaid bills after 3 months." />
+                        <HBox spacing="10" />
                     </VBox>
+
+                     <!-- Payment Notification -->
+                     <Label layoutX="21.0" layoutY="215.0" style="-fx-text-fill: #888888;" text="* Notifications will be sent for unpaid bills after 3 months." />
+                      <Button fx:id="submit_complaint" layoutX="14.0" layoutY="167.0" onAction="#handleSubmitComplaint" style="-fx-background-color: #ffd400;" text="Submit Complaint">
+                          <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                          </font>
+                      </Button>
                 </AnchorPane>
             </Tab>
 

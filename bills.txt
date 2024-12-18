@@ -1,2 +1,42 @@
-Paid Bill - Meter Code: 12345, Date: 2024-12-14 13:54:11
-Paid Bill - Meter Code: 1234, Date: 2024-12-16 20:08:04
+Name: mo
+Amount: $22
+Bill Number: 1
+Meter Code: 123
+Region: fafa
+Payment Date: 2024-12-18 23:12:26
+Customer ID: 9316fceb-5dbd-4ab3-a101-a0d0df40eb8a
+Customer Email: momo@gg.co
+----------------------
+Name: mo
+Amount: $22
+Bill Number: 1
+Meter Code: 123
+Region: fafa
+Payment Date: 2024-12-18 23:12:26
+Customer ID: 9316fceb-5dbd-4ab3-a101-a0d0df40eb8a
+Customer Email: momo@gg.co
+----------------------
+Name: mo
+Amount: $22
+Bill Number: 1
+Meter Code: 123
+Region: fafa
+Payment Date: 2024-12-18 23:12:26
+Customer ID: 9316fceb-5dbd-4ab3-a101-a0d0df40eb8a
+Customer Email: momo@gg.co
+----------------------ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
+Name: vogo
+Email: vogo@onthebeat.com
+Password: 12345
+Role: old
+Region: Maadi
+----------------------
+Name: vogo
+Amount: $123
+Bill Number: 1
+Meter Code: 123
+Region: Maadi
+Payment Date: 2024-12-19 00:39:53
+Customer ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
+Customer Email: vogo@onthebeat.com
+----------------------

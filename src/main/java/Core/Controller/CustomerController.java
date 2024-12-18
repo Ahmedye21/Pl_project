@@ -24,6 +24,7 @@ import java.util.Objects;
 public class CustomerController {
 
     @FXML private TextField metercode;
+    @FXML private TextField price;
     @FXML private TextArea complaint;
     @FXML private Button paybill;
     @FXML private Button submit_complaint;
@@ -61,43 +62,50 @@ public class CustomerController {
     }
 
 
-
     @FXML
     protected void handlePayBill(ActionEvent event) {
-        // Log the current logged-in user to the console for debugging
-        System.out.println("Current logged in user: " + (User.getLoggedInUser() != null ? User.getLoggedInUser().getName() : "None"));
+        System.out.println("Current logged-in user: " + (User.getLoggedInUser() != null ? User.getLoggedInUser().getName() : "None"));
 
-        // Get the meter code from the input field
         String meterCode = metercode.getText();
 
-        // Check if the meter code field is empty and show an alert if it is
+        // Check if meter code is empty
         if (meterCode.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error", "Meter Code is required.");
             return;
         }
 
-        // Get the logged-in user
-        User loggedInUser = User.getLoggedInUser();
+        String priceText = price.getText();
 
-        // If no user is logged in, show an error alert
+        if (priceText.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Price is required.");
+            return;
+        }
+
+        int priceValue = 0;
+        try {
+            priceValue = Integer.parseInt(priceText);
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid price format.");
+            return;
+        }
+
+        User loggedInUser = User.getLoggedInUser();
         if (loggedInUser == null) {
             showAlert(Alert.AlertType.ERROR, "Error", "No user is logged in.");
             return;
         }
 
-        // Check if the logged-in user is an instance of OldCustomer
-        if (loggedInUser instanceof OldCustomer loggedInCustomer) {
-            // Process the bill payment for the old customer
-            loggedInCustomer.handleBillPayment(meterCode);
+        if ("old".equals(loggedInUser.getRole())) {
+            loggedInUser = new OldCustomer(loggedInUser.getId(), loggedInUser.getName(), loggedInUser.getEmail(),
+                    loggedInUser.getPassword(), loggedInUser.getRole(), loggedInUser.getRegion());
 
-            // Show a success alert after the bill payment is processed
+            ((OldCustomer) loggedInUser).handleBillPayment(meterCode, priceValue);
+
             showAlert(Alert.AlertType.INFORMATION, "Success", "Bill payment submitted successfully.");
         } else {
-            // If the logged-in user is not an OldCustomer, show an error alert
-            showAlert(Alert.AlertType.ERROR, "Error", "The logged-in user is not an OldCustomer.");
+            showAlert(Alert.AlertType.ERROR, "Error", "The logged-in user does not have the correct role.");
         }
     }
-
 
 
     @FXML

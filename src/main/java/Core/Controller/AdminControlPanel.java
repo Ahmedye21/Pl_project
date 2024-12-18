@@ -1,6 +1,6 @@
 package Core.Controller;
 
-import Core.Models.Admin; // Import the Admin class
+import Core.Models.Admin;
 import Core.Models.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import java.util.Date;
-
-
 import java.io.IOException;
 import java.util.Set;
+import java.util.Date;
 
 public class AdminControlPanel {
     @FXML
@@ -63,18 +61,37 @@ public class AdminControlPanel {
         billsList.setVisible(false);
         totalCollected.setVisible(false);
 
+        // Set up TableView columns
         customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+//        amount.setCellValueFactory(new PropertyValueFactory<>("amountProperty"));  // Change to property method
 
-        Set<Customer> customers = admin.loadUsers();
-        for (Customer customer : customers) {
+        TableColumn<Customer, String> billNumberColumn = new TableColumn<>("Bill Number");
+        billNumberColumn.setCellValueFactory(new PropertyValueFactory<>("billNumber"));
+
+        TableColumn<Customer, String> meterCodeColumn = new TableColumn<>("Meter Code");
+        meterCodeColumn.setCellValueFactory(new PropertyValueFactory<>("meterCode"));
+
+        TableColumn<Customer, String> regionColumn = new TableColumn<>("Region");
+        regionColumn.setCellValueFactory(new PropertyValueFactory<>("region"));
+
+        // Add these columns to the TableView
+        billsList.getColumns().addAll(billNumberColumn, meterCodeColumn, regionColumn);
+
+        // Load bills data and add to the TableView
+        Set<Customer> bills = admin.loadBills();
+        for (Customer customer : bills) {
             billsList.getItems().add(customer);
         }
     }
 
+
+
     public void onChange(ActionEvent event) {
-        System.out.println(region.getSelectionModel().getSelectedItem());
+        // Print the selected region for debugging purposes
+        String selectedRegion = region.getSelectionModel().getSelectedItem();
+        System.out.println("Selected Region: " + selectedRegion);
     }
 
     public void viewBills(ActionEvent event) {
@@ -85,18 +102,20 @@ public class AdminControlPanel {
     public void viewTotalCollected(ActionEvent event) {
         billsList.setVisible(false);
         totalCollected.setVisible(true);
-        totalCollected.setText(region.getSelectionModel().getSelectedItem());
-        System.out.println(region.getSelectionModel().getSelectedItem());
+        double total = admin.getTotalCollected();  // Get total collected amount from Admin
+        totalCollected.setText("Total Collected: $" + total);  // Display the amount
+        System.out.println("Total Collected: $" + total);
     }
 
     public void viewStatistics(ActionEvent event) {
-        admin.viewReports();
-        System.out.println(region.getSelectionModel().getSelectedItem());
+        admin.viewReports(); // Show statistics/reports
+        System.out.println("Statistics for region: " + region.getSelectionModel().getSelectedItem());
     }
 
     public void manageUsers(ActionEvent event) throws IOException {
-        admin.manageUsers();
+        admin.manageUsers();  // Manage users functionality
 
+        // Load new scene for managing users
         Parent root = new FXMLLoader(getClass().getResource("/Models/Admin/manage_users.fxml")).load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

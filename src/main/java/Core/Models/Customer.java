@@ -11,6 +11,8 @@ public class Customer extends User {
     private String password;
     private String role;
     private String region;
+    private double amount;
+
 
     // Updated constructor to accept all necessary parameters
     public Customer(String id, String name, String email, String password, String role, String region) {
@@ -27,6 +29,14 @@ public class Customer extends User {
         this.name = name;
         this.email = email;
         this.role = role;
+    }
+
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public Customer(String name, String billNumber, double amount, String meterCode, String region, String email) {
     }
 
     // Getter and setter methods for all attributes
