@@ -34,3 +34,19 @@ Payment Date: 2024-12-19 00:39:53
 Customer ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
 Customer Email: vogo@onthebeat.com
 ----------------------
+ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
+Name: vogo
+Email: vogo@onthebeat.com
+Password: 12345
+Role: old
+Region: Maadi
+----------------------
+Name: vogo
+Amount: $123
+Bill Number: 1
+Meter Code: 123
+Region: Maadi
+Payment Date: 2024-12-19 09:20:04
+Customer ID: c0e28ac9-b7c1-4b61-9233-bbfb9587c1ac
+Customer Email: vogo@onthebeat.com
+----------------------

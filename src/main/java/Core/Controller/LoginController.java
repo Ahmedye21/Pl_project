@@ -80,6 +80,8 @@ public class LoginController {
 
                     loadScene(event, "/Models/Customer/Customer.fxml");
                     break;
+                case"operator":
+                    loadScene(event, "/Models/Operator/Operator.fxml");
                 default:
                     wronglogin.setText("Unrecognized role.");
                     break;
@@ -109,24 +111,22 @@ public class LoginController {
                 } else if (line.startsWith("Region:")) {
                     region = line.substring(7).trim();
                 } else if (line.startsWith("CustomerType:")) {
-                    customerType = line.substring(13).trim(); // Get customerType from file
+                    customerType = line.substring(13).trim();
                 }
 
                 // Check if we have all the necessary details
                 if (id != null && name != null && email != null && filePassword != null && role != null && region != null) {
                     // Verify the username and password match
                     if (name.equals(username) && filePassword.equals(password)) {
-                        return new User(id, name, email, filePassword, role, region, customerType); // Pass customerType correctly
+                        return new User(id, name, email, filePassword, role, region, customerType);
                     }
-
-                    // Reset fields for the next user in the file
                     id = name = email = filePassword = role = region = customerType = null;
                 }
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error reading user file", e);
         }
-        return null; // Return null if no match found
+        return null;
     }
 
     private void loadScene(ActionEvent event, String fxmlPath) throws IOException {

@@ -3,66 +3,62 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Core.Controller.OperatorModule">
-    <children>
-        <ComboBox fx:id="region" layoutX="276.0" layoutY="25.0"  prefHeight="25.0" prefWidth="200.0" promptText="Select Region" />
-        <Label layoutX="193.0" layoutY="23.0" text="Region:" textFill="#ffd400">
-            <font>
-                <Font name="System Bold Italic" size="20.0" />
-            </font>
-        </Label>
-        <Button layoutX="30.0" layoutY="70.0" mnemonicParsing="false" style="-fx-background-color: #ffd400;" text="Collect Payment">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="180.0" layoutY="70.0" mnemonicParsing="false"  style="-fx-background-color: #ffd400;" text="Print Bill">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="330.0" layoutY="70.0" mnemonicParsing="false"  style="-fx-background-color: #ffd400;" text="View Region Bills">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="480.0" layoutY="70.0" mnemonicParsing="false"  style="-fx-background-color: #ffd400;" text="Validate Reading">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="30.0" layoutY="130.0" mnemonicParsing="false" style="-fx-background-color: #ffd400;" text="Define Tariff">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="180.0" layoutY="130.0" mnemonicParsing="false"  style="-fx-background-color: #ffd400;" text="Stop Meter">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <Button layoutX="330.0" layoutY="130.0" mnemonicParsing="false" style="-fx-background-color: #ffd400;" text="Cancel Subscription">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-        <TableView fx:id="billsTable" layoutX="20.0" layoutY="200.0" prefHeight="250.0" prefWidth="660.0" visible="false">
-            <columns>
-                <TableColumn fx:id="meterCode" prefWidth="120.0" text="Meter Code" />
-                <TableColumn fx:id="customerName" prefWidth="150.0" text="Customer Name" />
-                <TableColumn fx:id="billAmount" prefWidth="150.0" text="Bill Amount" />
-                <TableColumn fx:id="status" prefWidth="100.0" text="Status" />
-            </columns>
-        </TableView>
-        <Button fx:id="logout" layoutX="620.0" layoutY="20.0" onAction="#logout" style="-fx-background-color: #f7f7f7;" text="Logout" textFill="RED">
-            <font>
-                <Font name="System Bold Italic" size="16.0" />
-            </font>
-        </Button>
-    </children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #171717;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Core.Controller.OperatorController">
+   <children>
+      <!-- Region Selection -->
+      <ComboBox fx:id="region" layoutX="276.0" layoutY="25.0" onAction="#onChange" prefHeight="25.0" prefWidth="131.0" promptText="Select Region" />
+      <Label layoutX="193.0" layoutY="23.0" text="Region:" textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+
+      <!-- Input Fields -->
+      <Label layoutX="30.0" layoutY="70.0" text="Meter Code:" textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="meterCodeInput" layoutX="150.0" layoutY="70.0" prefWidth="200.0" />
+
+      <Label layoutX="30.0" layoutY="110.0" text="Amount:" textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="amountInput" layoutX="150.0" layoutY="110.0" prefWidth="200.0" />
+
+      <!-- Buttons for Actions -->
+      <Button layoutX="370.0" layoutY="70.0" mnemonicParsing="false" onAction="#collectPayment" style="-fx-background-color: #ffd400;" text="Collect Payment">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="370.0" layoutY="110.0" mnemonicParsing="false" onAction="#printBill" style="-fx-background-color: #ffd400;" text="Print Bill">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="30.0" layoutY="160.0" mnemonicParsing="false" onAction="#validateReading" style="-fx-background-color: #ffd400;" text="Validate Reading">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="200.0" layoutY="160.0" mnemonicParsing="false" onAction="#disableMeter" style="-fx-background-color: #ffd400;" text="Disable Meter">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+
+      <!-- Logout Button -->
+      <Button fx:id="logoutButton" layoutX="505.0" layoutY="19.0" onAction="#logout" style="-fx-background-color: #f7f7f7;" text="Logout" textFill="RED">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+   </children>
 </AnchorPane>
