@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.UUID;
 
 public class ManageUsers {
     @FXML
@@ -31,11 +32,15 @@ public class ManageUsers {
     private TableColumn<Customer, String> userRole;
 
     @FXML
+    private TableColumn<Customer, String> userRegion;
+
+    @FXML
     public void initialize() {
         customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
         userName.setCellValueFactory(new PropertyValueFactory<>("name"));
         userEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         userRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+        userRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
 
         userTable.setRowFactory(tv -> {
             TableRow<Customer> row = new TableRow<>();
@@ -135,27 +140,25 @@ public class ManageUsers {
 
         TextField usernameField = new TextField();
         TextField roleField = new TextField();
+        TextField regionField = new TextField();
 
         dialog.getDialogPane().setContent(new VBox(10,
                 new Label("Username:"), usernameField,
-                new Label("Role:"), roleField
+                new Label("Role:"), roleField,
+                new Label("Region:"), regionField
         ));
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         dialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
-                // Assuming password and region are optional, you can provide default values or get them from user inputs
-                String password = "default_password";  // Replace with actual user input if needed
-                String region = "default_region";      // Replace with actual user input if needed
-
                 return new Customer(
-                        String.valueOf(userTable.getItems().size() + 1),  // Generate a unique String ID
-                        usernameField.getText(),  // Get the name from user input
-                        "",  // Assuming you don't have an email input for now
-                        password,  // Default password or input value
-                        roleField.getText(),  // Get the role from user input
-                        region  // Default region or input value
+                        UUID.randomUUID().toString(),
+                        usernameField.getText(),
+                        "",
+                        "",
+                        roleField.getText(),
+                        regionField.getText()
                 );
             }
             return null;

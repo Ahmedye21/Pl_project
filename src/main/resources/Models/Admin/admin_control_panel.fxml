@@ -28,11 +28,10 @@
       </Button>
       <TableView fx:id="billsList" layoutX="13.0" layoutY="134.0" prefHeight="252.0" prefWidth="574.0" visible="false">
          <columns>
-            <TableColumn fx:id="customerId" prefWidth="52.0" text="ID" />
-            <TableColumn fx:id="customerName" prefWidth="110.0" text="Customer Name" />
-            <TableColumn fx:id="customerEmail" prefWidth="199.0" text="Customer Email" />
-            <TableColumn fx:id="amount" minWidth="0.0" prefWidth="108.0" text="Amount" />
-            <TableColumn prefWidth="88.0" text="Date" />
+            <TableColumn fx:id="customerId" prefWidth="69.0" text="ID" />
+            <TableColumn fx:id="customerName" prefWidth="146.0" text="Customer Name" />
+            <TableColumn fx:id="customerEmail" prefWidth="192.0" text="Customer Email" />
+            <TableColumn fx:id="amount" minWidth="0.0" prefWidth="161.0" text="Amount" />
          </columns>
       </TableView>
       <Button layoutX="439.0" layoutY="76.0" mnemonicParsing="false" onAction="#viewStatistics" style="-fx-background-color: #ffd400;" text="View Statistics">

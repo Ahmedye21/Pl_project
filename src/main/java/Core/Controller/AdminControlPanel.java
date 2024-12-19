@@ -40,9 +40,6 @@ public class AdminControlPanel {
     public TableColumn<Customer, Double> amount;
 
     @FXML
-    public TableColumn<Customer, Date> date;
-
-    @FXML
     public Label totalCollected;
 
     private Admin admin;

@@ -23,8 +23,9 @@
         <columns>
             <TableColumn fx:id="customerId" prefWidth="41.0" text="ID" />
           <TableColumn fx:id="userName" prefWidth="166.0" text="Username" />
-            <TableColumn fx:id="userEmail" prefWidth="196.0" text="Email" />
-          <TableColumn fx:id="userRole" prefWidth="167.0" text="Role" />
+            <TableColumn fx:id="userEmail" prefWidth="163.0" text="Email" />
+          <TableColumn fx:id="userRole" prefWidth="75.0" text="Role" />
+            <TableColumn fx:id="userRegion" prefWidth="113.0" text="Region" />
         </columns>
       </TableView>
       <Button layoutX="207.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleAddUser" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: #ffd400;" text="Add User">
