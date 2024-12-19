@@ -14,13 +14,14 @@ public class Admin extends User {
 
     public Admin() {}
 
-    public Set<Customer> loadBills() {
+    public Set<Customer> loadBills(String region) {
         Set<Customer> bills = new HashSet<>();
+        String id = null;
         String name = null;
         double amount = 0.0;
         String billNumber = null;
         String meterCode = null;
-        String region = null;
+        String userRegion = null;
         String email = null;
 
         try (BufferedReader reader = new BufferedReader(new FileReader("bills.txt"))) {
@@ -39,30 +40,32 @@ public class Admin extends User {
                 } else if (line.startsWith("Meter Code:")) {
                     meterCode = line.substring(11).trim();
                 } else if (line.startsWith("Region:")) {
-                    region = line.substring(7).trim();
+                    userRegion = line.substring(7).trim();
                 } else if (line.startsWith("Customer Email:")) {
                     email = line.substring(15).trim();
+                } else if(line.startsWith("Customer ID:")) {
+                    id = line.substring(11).trim();
                 }
 
                 if (line.trim().equals("----------------------")) {
-                    if (name != null && billNumber != null && amount > 0) {
-                        Customer customer = new Customer(name, billNumber, amount, meterCode, region, email);
+                    if (name != null && billNumber != null && amount > 0 && userRegion.equals(region)) {
+                        Customer customer = new Customer(id, name, billNumber, amount, meterCode, userRegion, email);
                         bills.add(customer);
 
-                        System.out.println("Name: " + name);
-                        System.out.println("Amount: " + amount);
-                        System.out.println("Bill Number: " + billNumber);
-                        System.out.println("Meter Code: " + meterCode);
-                        System.out.println("Region: " + region);
-                        System.out.println("Customer Email: " + email);
-                        System.out.println("----------------------");
+//                        System.out.println("Name: " + name);
+//                        System.out.println("Amount: " + amount);
+//                        System.out.println("Bill Number: " + billNumber);
+//                        System.out.println("Meter Code: " + meterCode);
+//                        System.out.println("Region: " + userRegion);
+//                        System.out.println("Customer Email: " + email);
+//                        System.out.println("----------------------");
                     }
 
                     name = null;
                     amount = 0.0;
                     billNumber = null;
                     meterCode = null;
-                    region = null;
+                    userRegion = null;
                     email = null;
                 }
             }
@@ -94,20 +97,34 @@ public class Admin extends User {
 
 
 
-    public double getTotalCollected() {
+    public double getTotalCollected(String region) {
         double totalAmount = 0.0;
 
         try (BufferedReader reader = new BufferedReader(new FileReader("bills.txt"))) {
             String line;
+            String currentRegion = null;
+            double tempAmount = 0.0; // Temporarily store the amount
+
             while ((line = reader.readLine()) != null) {
+                line = line.trim(); // Trim to remove extra spaces
+
                 if (line.startsWith("Amount: $")) {
+                    // Store the amount temporarily
                     String amountStr = line.substring(9).trim();
                     try {
-                        double amount = Double.parseDouble(amountStr);
-                        totalAmount += amount;
+                        tempAmount = Double.parseDouble(amountStr);
                     } catch (NumberFormatException e) {
                         System.out.println("Error: Invalid amount format in bills.txt");
+                        tempAmount = 0.0; // Reset tempAmount in case of error
                     }
+                } else if (line.startsWith("Region:")) {
+                    // Process the region and add tempAmount if it matches
+                    currentRegion = line.substring(7).trim();
+                    if (currentRegion.equals(region)) {
+                        totalAmount += tempAmount;
+                    }
+                    // Reset tempAmount after processing
+                    tempAmount = 0.0;
                 }
             }
         } catch (IOException e) {

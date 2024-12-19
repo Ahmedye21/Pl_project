@@ -36,7 +36,12 @@ public class Customer extends User {
         return amount;
     }
 
-    public Customer(String name, String billNumber, double amount, String meterCode, String region, String email) {
+    public Customer(String id, String name, String billNumber, double amount, String meterCode, String region, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.region = region;
+        this.amount = amount;
     }
 
     // Getter and setter methods for all attributes

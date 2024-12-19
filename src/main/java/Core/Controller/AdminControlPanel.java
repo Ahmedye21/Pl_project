@@ -2,6 +2,7 @@ package Core.Controller;
 
 import Core.Models.Admin;
 import Core.Models.Customer;
+import Core.Models.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Date;
 
@@ -65,25 +67,7 @@ public class AdminControlPanel {
         customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-//        amount.setCellValueFactory(new PropertyValueFactory<>("amountProperty"));  // Change to property method
-
-        TableColumn<Customer, String> billNumberColumn = new TableColumn<>("Bill Number");
-        billNumberColumn.setCellValueFactory(new PropertyValueFactory<>("billNumber"));
-
-        TableColumn<Customer, String> meterCodeColumn = new TableColumn<>("Meter Code");
-        meterCodeColumn.setCellValueFactory(new PropertyValueFactory<>("meterCode"));
-
-        TableColumn<Customer, String> regionColumn = new TableColumn<>("Region");
-        regionColumn.setCellValueFactory(new PropertyValueFactory<>("region"));
-
-        // Add these columns to the TableView
-        billsList.getColumns().addAll(billNumberColumn, meterCodeColumn, regionColumn);
-
-        // Load bills data and add to the TableView
-        Set<Customer> bills = admin.loadBills();
-        for (Customer customer : bills) {
-            billsList.getItems().add(customer);
-        }
+        amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     }
 
 
@@ -97,12 +81,21 @@ public class AdminControlPanel {
     public void viewBills(ActionEvent event) {
         totalCollected.setVisible(false);
         billsList.setVisible(true);
+        billsList.getItems().clear();
+
+        // Load bills data and add to the TableView
+        Set<Customer> bills = admin.loadBills(region.getSelectionModel().getSelectedItem());
+        for (Customer customer : bills) {
+//            System.out.println("dbg: " + customer.getName());
+            billsList.getItems().add(customer);
+        }
     }
 
     public void viewTotalCollected(ActionEvent event) {
         billsList.setVisible(false);
         totalCollected.setVisible(true);
-        double total = admin.getTotalCollected();  // Get total collected amount from Admin
+
+        double total = admin.getTotalCollected(region.getSelectionModel().getSelectedItem());  // Get total collected amount from Admin
         totalCollected.setText("Total Collected: $" + total);  // Display the amount
         System.out.println("Total Collected: $" + total);
     }
@@ -122,5 +115,23 @@ public class AdminControlPanel {
         stage.setTitle("Manage Users");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void logout(ActionEvent event) {
+        User loggedInUser = User.getLoggedInUser();
+        if (loggedInUser != null) {
+            loggedInUser.logout();
+        }
+
+        // Redirect to the login page
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Models/User/login.fxml")));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
