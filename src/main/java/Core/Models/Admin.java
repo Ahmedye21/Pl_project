@@ -134,11 +134,6 @@ public class Admin extends User {
         return totalAmount;
     }
 
-
-    public void viewReports() {
-        System.out.println("Admin is viewing reports...");
-    }
-
     public void manageUsers() {
         System.out.println("Admin is managing users...");
     }

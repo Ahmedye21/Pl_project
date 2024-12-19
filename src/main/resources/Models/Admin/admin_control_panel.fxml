@@ -54,5 +54,25 @@
             <Font name="System Bold Italic" size="16.0" />
          </font>
       </Button>
+      <Label fx:id="avgBillLabel" layoutX="88.0" layoutY="293.0" text="Average Bill Price: " textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lowestBillLabel" layoutX="399.0" layoutY="198.0" text="Lowest Bill: " textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="billsCountLabel" layoutX="399.0" layoutY="293.0" text="Bills Count: " textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="highestBillLabel" layoutX="88.0" layoutY="198.0" text="Highest Bill: " textFill="#ffd400">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

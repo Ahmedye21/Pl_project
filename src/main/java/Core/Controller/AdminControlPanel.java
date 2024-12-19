@@ -42,6 +42,18 @@ public class AdminControlPanel {
     @FXML
     public Label totalCollected;
 
+    @FXML
+    public Label highestBillLabel;
+
+    @FXML
+    public Label lowestBillLabel;
+
+    @FXML
+    public Label avgBillLabel;
+
+    @FXML
+    public Label billsCountLabel;
+
     private Admin admin;
 
     public AdminControlPanel() {
@@ -59,6 +71,10 @@ public class AdminControlPanel {
 
         billsList.setVisible(false);
         totalCollected.setVisible(false);
+        highestBillLabel.setVisible(false);
+        lowestBillLabel.setVisible(false);
+        avgBillLabel.setVisible(false);
+        billsCountLabel.setVisible(false);
 
         // Set up TableView columns
         customerId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -80,6 +96,11 @@ public class AdminControlPanel {
         billsList.setVisible(true);
         billsList.getItems().clear();
 
+        highestBillLabel.setVisible(false);
+        lowestBillLabel.setVisible(false);
+        avgBillLabel.setVisible(false);
+        billsCountLabel.setVisible(false);
+
         // Load bills data and add to the TableView
         Set<Customer> bills = admin.loadBills(region.getSelectionModel().getSelectedItem());
         for (Customer customer : bills) {
@@ -92,14 +113,45 @@ public class AdminControlPanel {
         billsList.setVisible(false);
         totalCollected.setVisible(true);
 
+        highestBillLabel.setVisible(false);
+        lowestBillLabel.setVisible(false);
+        avgBillLabel.setVisible(false);
+        billsCountLabel.setVisible(false);
+
         double total = admin.getTotalCollected(region.getSelectionModel().getSelectedItem());  // Get total collected amount from Admin
         totalCollected.setText("Total Collected: $" + total);  // Display the amount
         System.out.println("Total Collected: $" + total);
     }
 
     public void viewStatistics(ActionEvent event) {
-        admin.viewReports(); // Show statistics/reports
-        System.out.println("Statistics for region: " + region.getSelectionModel().getSelectedItem());
+        billsList.setVisible(false);
+        totalCollected.setVisible(false);
+
+        highestBillLabel.setVisible(true);
+        lowestBillLabel.setVisible(true);
+        avgBillLabel.setVisible(true);
+        billsCountLabel.setVisible(true);
+
+        double totalAmount = 0;
+        double highestBill = Double.MIN_VALUE;
+        double lowestBill = Double.MAX_VALUE;
+        int transactionCount = 0;
+
+        Set<Customer> bills = admin.loadBills(region.getSelectionModel().getSelectedItem());
+        for (Customer customer : bills) {
+            totalAmount += customer.getAmount();
+            highestBill = Math.max(highestBill, customer.getAmount());
+            lowestBill = Math.min(lowestBill, customer.getAmount());
+            transactionCount++;
+        }
+
+        highestBillLabel.setText("Highest Bill: $" + highestBill);
+        lowestBillLabel.setText("Lowest Bill: $" + lowestBill);
+        avgBillLabel.setText("Average Bill Price: $" + totalAmount / transactionCount);
+        billsCountLabel.setText("Bills Count: " + transactionCount);
+
+//        System.out.println("Statistics for region: " + region.getSelectionModel().getSelectedItem());
+//        System.out.println("Average Bill Amount: $" + totalAmount / transactionCount);
     }
 
     public void manageUsers(ActionEvent event) throws IOException {
