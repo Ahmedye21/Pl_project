@@ -1,10 +1,12 @@
 package Core.Models;
 
+import Core.Interfaces.UserInterface;
+
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class User {
+public class User implements UserInterface {
     private String id;
     private String name;
     private String email;
